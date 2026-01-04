@@ -40,15 +40,6 @@ btnScrollTo.addEventListener('click', function (e) {
   const s1Coodinates = section1.getBoundingClientRect();
   e.target.getBoundingClientRect();
 
-  // Modern method 1
-  // window.scrollBy({
-  //   left: s1Coodinates.left,
-  //   top: s1Coodinates.top,
-  //   behavior: 'smooth',
-  // });
-
-  // Modern method 2
-  section1.scrollIntoView({ behavior: 'smooth' });
   //  // Outdated methods
   // console.log(s1Coodinates.left, s1Coodinates.top, window.pageYOffset);
   // window.scrollTo(
@@ -61,6 +52,16 @@ btnScrollTo.addEventListener('click', function (e) {
   //   top: s1Coodinates.top + window.pageYOffset,
   //   behavior: 'smooth',
   // });
+
+  // Modern method 1
+  // window.scrollBy({
+  //   left: s1Coodinates.left,
+  //   top: s1Coodinates.top,
+  //   behavior: 'smooth',
+  // });
+
+  // Modern method 2
+  section1.scrollIntoView({ behavior: 'smooth' });
 });
 
 // ============================Lecture============================
