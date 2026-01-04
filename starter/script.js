@@ -32,6 +32,38 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+// Smooth Scrolling Button
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  const s1Coodinates = section1.getBoundingClientRect();
+  e.target.getBoundingClientRect();
+
+  //  // Outdated methods
+  // console.log(s1Coodinates.left, s1Coodinates.top, window.pageYOffset);
+  // window.scrollTo(
+  //   s1Coodinates.left + window.pageXOffset,
+  //   s1Coodinates.top + window.pageYOffset
+  // );
+
+  // window.scrollTo({
+  //   left: s1Coodinates.left + window.pageXOffset,
+  //   top: s1Coodinates.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // Modern method 1
+  // window.scrollBy({
+  //   left: s1Coodinates.left,
+  //   top: s1Coodinates.top,
+  //   behavior: 'smooth',
+  // });
+
+  // Modern method 2
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
+
 // ============================Lecture============================
 
 // console.log(document.querySelectorAll('.btn'));
@@ -74,20 +106,20 @@ cookieBtn.addEventListener('click', function () {
 
 // document.documentElement.style.setProperty('--color-primary', 'purple');
 
-//Attributes
-const logo = document.querySelector('.nav__logo');
-console.log(logo);
-console.log(logo.src);
-console.log(logo.getAttribute('myAttribute'));
+// //Attributes
+// const logo = document.querySelector('.nav__logo');
+// console.log(logo);
+// console.log(logo.src);
+// console.log(logo.getAttribute('myAttribute'));
 
-console.log(logo.getAttribute('src'));
+// console.log(logo.getAttribute('src'));
 
-const twitterLink = document.querySelector('.twitter-link');
-console.log(twitterLink.href);
-console.log(twitterLink.getAttribute('href'));
+// const twitterLink = document.querySelector('.twitter-link');
+// console.log(twitterLink.href);
+// console.log(twitterLink.getAttribute('href'));
 
-//Data Attributes
-console.log(logo.dataset.versionNumber);
+// //Data Attributes
+// console.log(logo.dataset.versionNumber);
 
 // Classes
 // console.log(logo.classList);
