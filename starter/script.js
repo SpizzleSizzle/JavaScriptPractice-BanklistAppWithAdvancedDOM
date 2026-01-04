@@ -74,22 +74,23 @@ btnScrollTo.addEventListener('click', function (e) {
 
 // modal.insertAdjacentHTML('afterbegin', myHTML);
 
-const message = document.createElement('h1');
-message.classList.add('cookie-message');
+// // Cookie button
+// const message = document.createElement('h1');
+// message.classList.add('cookie-message');
 
-message.innerHTML =
-  '<span>This is a cookie message</span><button class="btn btn--close-cookie">Take a cookie</button>';
+// message.innerHTML =
+//   '<span>This is a cookie message</span><button class="btn btn--close-cookie">Take a cookie</button>';
 
-const header = document.querySelector('header');
-header.prepend(message);
-// header.append(message);
+// const header = document.querySelector('header');
+// header.prepend(message);
+// // header.append(message);
 
-const cookieBtn = document.querySelector('.btn--close-cookie');
+// const cookieBtn = document.querySelector('.btn--close-cookie');
 
-cookieBtn.addEventListener('click', function () {
-  // message.remove();
-  message.parentElement.removeChild(message);
-});
+// cookieBtn.addEventListener('click', function () {
+//   // message.remove();
+//   message.parentElement.removeChild(message);
+// });
 
 // // Styles
 // message.style.backgroundColor = '#37383d';
