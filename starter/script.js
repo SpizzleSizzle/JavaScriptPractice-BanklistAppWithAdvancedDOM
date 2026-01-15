@@ -6,6 +6,10 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 ///////////////////////////////////////
 // Modal window
 
@@ -61,9 +65,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 //////////////////////////////////////////////////////////////
 // Tabbed component
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
 tabsContainer.addEventListener('click', function (e) {
   const clicked = e.target.closest('.operations__tab'); // 按照类名查找按钮元素
@@ -83,15 +84,25 @@ tabsContainer.addEventListener('click', function (e) {
   );
 });
 
-// Straight Forward Method
-// document.querySelectorAll('.nav__link').forEach(function (cur) {
-//   cur.addEventListener('click', function (e) {
-//     e.preventDefault(); // Prevent the anchor from auto scrolling
-//     const id = this.getAttribute('href');
-//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
+//////////////////////////////////////////////////////////////
+// Menu fade animation
 
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(cur => {
+      if (cur !== link) cur.style.opacity = this; // 将同级元素中除自身之外的其他元素选中
+    });
+    logo.style.opacity = this;
+  }
+};
+
+nav.addEventListener('mouseover', handleHover.bind(0.3));
+
+nav.addEventListener('mouseout', handleHover.bind(1));
 // ============================Lecture============================
 
 // console.log(document.querySelectorAll('.btn'));
