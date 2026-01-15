@@ -70,33 +70,17 @@ tabsContainer.addEventListener('click', function (e) {
 
   if (!clicked) return; // 如果找不到目标元素，提前返回函数
 
-  tabs.forEach(function (cur) {
-    // 先去除active样式
-    if (cur.classList.contains('operations__tab--active')) {
-      cur.classList.remove('operations__tab--active');
-    }
-  });
+  // 先去除所有active样式
+  tabs.forEach(cur => cur.classList.remove('operations__tab--active'));
+  tabsContent.forEach(cur =>
+    cur.classList.remove('operations__content--active')
+  );
 
-  tabsContent.forEach(function (cur) {
-    // 先去除active样式
-    if (cur.classList.contains('operations__content--active')) {
-      cur.classList.remove('operations__content--active');
-    }
-  });
-
-  if (!clicked.classList.contains('operations__tab--active')) {
-    clicked.classList.add('operations__tab--active');
-  }
-
-  if (
-    !tabsContent[clicked.getAttribute('data-tab') - 1].classList.contains(
-      'operations__content--active'
-    )
-  ) {
-    !tabsContent[clicked.getAttribute('data-tab') - 1].classList.add(
-      'operations__content--active'
-    );
-  }
+  // 添加active样式
+  clicked.classList.add('operations__tab--active');
+  tabsContent[clicked.getAttribute('data-tab') - 1].classList.add(
+    'operations__content--active'
+  );
 });
 
 // Straight Forward Method
