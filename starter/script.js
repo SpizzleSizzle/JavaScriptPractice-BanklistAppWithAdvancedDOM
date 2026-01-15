@@ -1,12 +1,13 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+///////////////////////////////////////
+// Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -31,28 +32,10 @@ document.addEventListener('keydown', function (e) {
     closeModal();
   }
 });
-
+//////////////////////////////////////////////////////////////
 // Smooth Scrolling Button
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.getElementById('section--1');
 
 btnScrollTo.addEventListener('click', function (e) {
-  const s1Coodinates = section1.getBoundingClientRect();
-  e.target.getBoundingClientRect();
-
-  //  // Outdated methods
-  // console.log(s1Coodinates.left, s1Coodinates.top, window.pageYOffset);
-  // window.scrollTo(
-  //   s1Coodinates.left + window.pageXOffset,
-  //   s1Coodinates.top + window.pageYOffset
-  // );
-
-  // window.scrollTo({
-  //   left: s1Coodinates.left + window.pageXOffset,
-  //   top: s1Coodinates.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
-
   // Modern method 1
   // window.scrollBy({
   //   left: s1Coodinates.left,
@@ -63,6 +46,67 @@ btnScrollTo.addEventListener('click', function (e) {
   // Modern method 2
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+//////////////////////////////////////////////////////////////
+// Smooth Scrolling Navigation
+// Method with event delegation
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  if (e.target.classList.contains('nav__link')) {
+    document
+      .querySelector(e.target.getAttribute('href'))
+      .scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+//////////////////////////////////////////////////////////////
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab'); // 按照类名查找按钮元素
+
+  if (!clicked) return; // 如果找不到目标元素，提前返回函数
+
+  tabs.forEach(function (cur) {
+    // 先去除active样式
+    if (cur.classList.contains('operations__tab--active')) {
+      cur.classList.remove('operations__tab--active');
+    }
+  });
+
+  tabsContent.forEach(function (cur) {
+    // 先去除active样式
+    if (cur.classList.contains('operations__content--active')) {
+      cur.classList.remove('operations__content--active');
+    }
+  });
+
+  if (!clicked.classList.contains('operations__tab--active')) {
+    clicked.classList.add('operations__tab--active');
+  }
+
+  if (
+    !tabsContent[clicked.getAttribute('data-tab') - 1].classList.contains(
+      'operations__content--active'
+    )
+  ) {
+    !tabsContent[clicked.getAttribute('data-tab') - 1].classList.add(
+      'operations__content--active'
+    );
+  }
+});
+
+// Straight Forward Method
+// document.querySelectorAll('.nav__link').forEach(function (cur) {
+//   cur.addEventListener('click', function (e) {
+//     e.preventDefault(); // Prevent the anchor from auto scrolling
+//     const id = this.getAttribute('href');
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
 
 // ============================Lecture============================
 
@@ -134,3 +178,73 @@ btnScrollTo.addEventListener('click', function (e) {
 
 // const testBtn = document.querySelector('.test-button');
 // opBtn.className.split(' ').forEach(cur => testBtn.classList.add(cur));
+
+// // Event Listening
+
+// const h1 = document.querySelector('h1');
+// const alertH1 = function (e) {
+//   alert('addEventListener: You are reading the heading');
+// };
+// const logH1Event = function (e) {
+//   console.log(e);
+// };
+
+// h1.addEventListener('mouseenter', alertH1, logH1Event);
+// setTimeout(() => {
+//   h1.removeEventListener('mouseenter', alertH1);
+// }, 5000);
+
+// h1.onmousedown = function (e) {
+//   alert('onmousedown: You are reading the heading');
+//   console.log(e);
+// };
+
+// // Event Bubbling
+// const randomNum = (min, max) => {
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// };
+
+// const randomColor = () =>
+//   `rgb(${randomNum(0, 255)}, ${randomNum(0, 255)}, ${randomNum(0, 255)})`;
+
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log(e.target, e.currentTarget);
+//   e.stopPropagation();
+// });
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log(e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   this.style.backgroundColor = randomColor();
+//   console.log(e.target, e.currentTarget);
+// });
+
+// // DOM Traversing
+// const h1 = document.querySelector('h1');
+
+// // select downwards: child
+// // console.log(h1.querySelectorAll('.highlight'));
+// // console.log(h1.childNodes);
+// // console.log(h1.children);
+// h1.firstElementChild.style.color = 'blue';
+// h1.lastElementChild.style.color = 'orange';
+
+// // select upwoards: parent
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+
+// h1.closest('.header').style.background = 'var(--color-primary-darker)';
+
+// select sideways: siblings
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+// const allSiblings = [...h1.parentElement.children];
+// allSiblings.forEach(function (cur) {
+//   if (cur !== h1) {
+//     cur.style.transform = 'scale(0.5)';
+//   }
+// });
