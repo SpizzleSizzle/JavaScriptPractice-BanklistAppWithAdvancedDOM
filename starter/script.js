@@ -10,6 +10,8 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+const header = document.querySelector('header');
+const allSections = document.querySelectorAll('.section');
 ///////////////////////////////////////
 // Modal window
 
@@ -103,6 +105,62 @@ const handleHover = function (e) {
 nav.addEventListener('mouseover', handleHover.bind(0.3));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+//////////////////////////////////////////////////////////////
+// Sticky navigation
+
+// Better method with intersection observer API
+const stickyNav = function (entries, observer) {
+  const [entry] = entries;
+  if (entry.isIntersecting === false) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+};
+const obsOptions = {
+  root: null,
+  threshold:
+    nav.getBoundingClientRect().height / header.getBoundingClientRect().height,
+};
+const headerOserver = new IntersectionObserver(stickyNav, obsOptions);
+
+headerOserver.observe(header);
+
+//////////////////////////////////////////////////////////////
+// Reveal sections
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry.isIntersecting, entry.target.classList);
+
+  if (!entry.isIntersecting) return;
+
+  if (entry.isIntersecting) {
+    entry.target.classList.remove('section--hidden');
+    observer.unobserve(entry.target); // 当元素出现后停止观察
+  }
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(function (section) {
+  section.classList.add('section--hidden');
+  sectionObserver.observe(section);
+});
+
+// Method with scroll event
+// window.addEventListener('scroll', function () {
+//   // console.log(innitialCoordinates.y);
+//   if (section1.getBoundingClientRect().top <= 0) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
+
 // ============================Lecture============================
 
 // console.log(document.querySelectorAll('.btn'));
@@ -234,7 +292,7 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 
 // h1.closest('.header').style.background = 'var(--color-primary-darker)';
 
-// select sideways: siblings
+// // select sideways: siblings
 // console.log(h1.previousElementSibling);
 // console.log(h1.nextElementSibling);
 // const allSiblings = [...h1.parentElement.children];
