@@ -12,6 +12,10 @@ const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
 const header = document.querySelector('header');
 const allSections = document.querySelectorAll('.section');
+const featuresImgs = document.querySelectorAll('img[data-src]');
+const allSlides = document.querySelectorAll('.slide');
+const slider = document.querySelector('.slider');
+
 ///////////////////////////////////////
 // Modal window
 
@@ -127,11 +131,20 @@ const headerOserver = new IntersectionObserver(stickyNav, obsOptions);
 
 headerOserver.observe(header);
 
+// Method with scroll event
+// window.addEventListener('scroll', function () {
+//   // console.log(innitialCoordinates.y);
+//   if (section1.getBoundingClientRect().top <= 0) {
+//     nav.classList.add('sticky');
+//   } else {
+//     nav.classList.remove('sticky');
+//   }
+// });
+
 //////////////////////////////////////////////////////////////
 // Reveal sections
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-  console.log(entry.isIntersecting, entry.target.classList);
 
   if (!entry.isIntersecting) return;
 
@@ -147,20 +160,82 @@ const sectionObserver = new IntersectionObserver(revealSection, {
 });
 
 allSections.forEach(function (section) {
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
   sectionObserver.observe(section);
 });
 
-// Method with scroll event
-// window.addEventListener('scroll', function () {
-//   // console.log(innitialCoordinates.y);
-//   if (section1.getBoundingClientRect().top <= 0) {
-//     nav.classList.add('sticky');
-//   } else {
-//     nav.classList.remove('sticky');
-//   }
-// });
+//////////////////////////////////////////////////////////////
+// Lazy loading images
 
+const lazyImg = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+
+  if (entry.isIntersecting) {
+    // 将src换为data-src
+    entry.target.src = entry.target.dataset.src;
+    entry.target.addEventListener('load', function (e) {
+      e.target.classList.remove('lazy-img');
+    });
+
+    observer.unobserve(entry.target);
+  }
+};
+
+const imgObserver = new IntersectionObserver(lazyImg, {
+  root: null,
+  threshold: [0],
+  rootMargin: '+200px',
+});
+
+featuresImgs.forEach(function (img) {
+  img.classList.add('lazy-img');
+  imgObserver.observe(img);
+});
+
+//////////////////////////////////////////////////////////////
+// Sliders
+// slider.style.transform = 'scale(0.2) translateX(-800px)';
+slider.style.overflow = 'visible';
+
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+let currentSlide = 0;
+const maxSlide = allSlides.length;
+
+const goToSlide = function (offSet) {
+  allSlides.forEach((slide, idx) => {
+    slide.style.transform = `translateX(${(idx - offSet) * 100}%)`;
+  });
+};
+
+goToSlide(0); // 将每一个slide展开排列
+
+const nextSlide = function () {
+  // if (currentSlide === maxSlide) {
+  //   currentSlide = 0; // 当滚动结尾时，回到开头
+  // } else {
+  //   currentSlide++;
+  // }
+  currentSlide = (currentSlide + 1) % maxSlide; // 当滚动到头时，回到开头
+  goToSlide(currentSlide);
+};
+
+const prevSlide = function () {
+  // if (currentSlide > 0) {
+  //   // 当处于第一张slide时， 不向前滚动
+  //   currentSlide--;
+  // }
+  if (currentSlide === 0) {
+    currentSlide = maxSlide - 1; // 当处于第一张slide时，跳到结尾
+  } else {
+    currentSlide--;
+  }
+  goToSlide(currentSlide);
+};
+
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
 // ============================Lecture============================
 
 // console.log(document.querySelectorAll('.btn'));
