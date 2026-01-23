@@ -196,46 +196,100 @@ featuresImgs.forEach(function (img) {
 //////////////////////////////////////////////////////////////
 // Sliders
 // slider.style.transform = 'scale(0.2) translateX(-800px)';
-slider.style.overflow = 'visible';
+// slider.style.overflow = 'visible';
 
-const btnLeft = document.querySelector('.slider__btn--left');
-const btnRight = document.querySelector('.slider__btn--right');
-let currentSlide = 0;
-const maxSlide = allSlides.length;
+const makeSlider = function () {
+  const btnLeft = document.querySelector('.slider__btn--left');
+  const btnRight = document.querySelector('.slider__btn--right');
+  const dotsContainer = document.querySelector('.dots');
 
-const goToSlide = function (offSet) {
-  allSlides.forEach((slide, idx) => {
-    slide.style.transform = `translateX(${(idx - offSet) * 100}%)`;
+  let currentSlide = 0;
+  const maxSlide = allSlides.length;
+
+  const createDots = function () {
+    allSlides.forEach(function (_, idx) {
+      dotsContainer.insertAdjacentHTML(
+        'beforeend',
+        `
+        <button class="dots__dot" data-slide="${idx}"></button>
+        `
+      );
+    });
+  };
+
+  const activateDot = function (slide) {
+    document
+      .querySelectorAll('.dots__dot')
+      .forEach(cur => cur.classList.remove('dots__dot--active'));
+
+    document
+      .querySelector(`.dots__dot[data-slide="${slide}"]`)
+      .classList.add('dots__dot--active');
+  };
+
+  const goToSlide = function (offSet) {
+    allSlides.forEach((slide, idx) => {
+      slide.style.transform = `translateX(${(idx - offSet) * 100}%)`;
+    });
+  };
+
+  const init = function () {
+    goToSlide(0); // 将每一个slide展开排列
+    createDots();
+    activateDot(0);
+  };
+
+  init();
+
+  const nextSlide = function () {
+    // if (currentSlide === maxSlide) {
+    //   currentSlide = 0; // 当滚动结尾时，回到开头
+    // } else {
+    //   currentSlide++;
+    // }
+    currentSlide = (currentSlide + 1) % maxSlide; // 当滚动到头时，回到开头
+    goToSlide(currentSlide);
+    activateDot(currentSlide);
+  };
+
+  const prevSlide = function () {
+    // if (currentSlide > 0) {
+    //   // 当处于第一张slide时， 不向前滚动
+    //   currentSlide--;
+    // }
+    if (currentSlide === 0) {
+      currentSlide = maxSlide - 1; // 当处于第一张slide时，跳到结尾
+    } else {
+      currentSlide--;
+    }
+    goToSlide(currentSlide);
+    activateDot(currentSlide);
+  };
+
+  //Event Listeners
+  btnRight.addEventListener('click', nextSlide);
+  btnLeft.addEventListener('click', prevSlide);
+
+  // Control slider with keyboard
+
+  document.addEventListener('keyup', function (e) {
+    if (e.key === 'ArrowRight') {
+      nextSlide();
+    }
+    if (e.key === 'ArrowLeft') {
+      prevSlide();
+    }
+  });
+
+  dotsContainer.addEventListener('click', function (e) {
+    if (e.target.classList.contains('dots__dot')) {
+      const { slide } = e.target.dataset;
+      goToSlide(slide);
+      activateDot(slide);
+    }
   });
 };
-
-goToSlide(0); // 将每一个slide展开排列
-
-const nextSlide = function () {
-  // if (currentSlide === maxSlide) {
-  //   currentSlide = 0; // 当滚动结尾时，回到开头
-  // } else {
-  //   currentSlide++;
-  // }
-  currentSlide = (currentSlide + 1) % maxSlide; // 当滚动到头时，回到开头
-  goToSlide(currentSlide);
-};
-
-const prevSlide = function () {
-  // if (currentSlide > 0) {
-  //   // 当处于第一张slide时， 不向前滚动
-  //   currentSlide--;
-  // }
-  if (currentSlide === 0) {
-    currentSlide = maxSlide - 1; // 当处于第一张slide时，跳到结尾
-  } else {
-    currentSlide--;
-  }
-  goToSlide(currentSlide);
-};
-
-btnRight.addEventListener('click', nextSlide);
-btnLeft.addEventListener('click', prevSlide);
+makeSlider();
 // ============================Lecture============================
 
 // console.log(document.querySelectorAll('.btn'));
@@ -375,4 +429,18 @@ btnLeft.addEventListener('click', prevSlide);
 //   if (cur !== h1) {
 //     cur.style.transform = 'scale(0.5)';
 //   }
+// });
+
+// // Lifecycle DOM events
+// document.addEventListener('DOMContentLoaded', function (e) {
+//   console.log(e);
+// });
+
+// window.addEventListener('load', function (e) {
+//   console.log(e);
+// });
+
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
 // });
